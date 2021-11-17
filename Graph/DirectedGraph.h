@@ -162,7 +162,10 @@ bool DirectedGraph<TV,TE>::empty(){
 
 template<typename TV, typename TE>
 void DirectedGraph<TV,TE>::clear() {
-
+    while(!this->vertexes.empty()){
+        auto i = *this->vertexes.begin();
+        deleteVertex(i.first);
+    }
 }
 
 template<typename TV, typename TE>
