@@ -22,7 +22,7 @@ public:
     }
 
     UnDirectedGraph<TV,TE> apply(){
-        auto* result = new UnDirectedGraph<TV,TE>();
+        auto result = new UnDirectedGraph<TV,TE>();
         auto edge_compare = [](Edge<TV, TE>* e1, Edge<TV, TE>* e2) {return e1->weight > e2->weight;};
         priority_queue<Edge<TV, TE>*, vector<Edge<TV, TE>*>, decltype(edge_compare)> Available_edges(edge_compare);
         unordered_map<Vertex<TV, TE>*, string> ids;
@@ -30,16 +30,15 @@ public:
         //lambda
         auto is_visited = [&visited](Vertex<TV, TE>* vx) { return visited.find(vx) != end(visited); };
 
-        for(auto& temp_vert: Graph.vertexes){
-
-        }
+        for(auto& temp_vert: Graph.vertexes)
+            ids[temp_vert.second] = temp_vert.first;
 
         //1. Elegimos el vertice
         auto vx = Graph.vertexes[id_start];
 
         //2. Agregamos el vértice en visitados y agregamos los aristas
         visited.insert(vx);
-        ids[vx] = id_start;
+
         for(auto &temp_edge: vx->edges){
             Available_edges.push(temp_edge);
         }
@@ -57,19 +56,22 @@ public:
             //3.2. Remover la arista elegida de los "disponibles"
             Available_edges.pop();
             //3.3 Verificar si el vértice adyacente no ha sido visitado
-            auto vert_ad = edge_choose->vertexes[0];//vertice adyacente
+            auto vert_ad = edge_choose->vertexes[1];//vertice adyacente
+            //cout<<vert_ad->data<<endl;
             if(!is_visited(vert_ad)){
                 //3.3.1. Agregar vertice adjacente a visitados
                 visited.insert(vert_ad);
                 //3.3.2. Agrego la arista en el grafo
-                result->createEdge(Graph.vertexes.find(vert_ad), Graph.vertexes.find(edge_choose->vertexes[1]),edge_choose->weight);
+                result->insertVertex(ids[vert_ad],vert_ad->data);
+                result->insertVertex(ids[edge_choose->vertexes[0]],edge_choose->vertexes[0]->data);
+                result->createEdge(ids[vert_ad], ids[edge_choose->vertexes[0]],edge_choose->weight);
                 //3.3.3. Agregamos las aristas disponibles adyacentes del vértice adyacente
                 for(auto& temp_adj: vert_ad->edges){
                     Available_edges.push(temp_adj);
                 }
             }
         }
-        return result;
+        return *result;
     }
 
 };

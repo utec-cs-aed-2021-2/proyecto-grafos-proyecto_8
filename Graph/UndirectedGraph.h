@@ -127,14 +127,21 @@ bool UnDirectedGraph<TV,TE>::createEdge(string id1, string id2, TE w){
             return false;
     }
 
-    auto* NewEdge = new Edge<TV,TE>;
-    NewEdge->weight=w;
+    auto* NewEdge_1 = new Edge<TV,TE>;
+    NewEdge_1->weight=w;
     //Asignando en la clase Edge los dos vértices pertenecientes
-    NewEdge->vertexes[0] = this->vertexes[id1];
-    NewEdge->vertexes[1] = this->vertexes[id2];
+    NewEdge_1->vertexes[0] = this->vertexes[id1];
+    NewEdge_1->vertexes[1] = this->vertexes[id2];
     //Asignando en la clase Vertex las aristas a las cuales pertenece
-    this->vertexes[id1]->edges.push_front(NewEdge);
-    this->vertexes[id2]->edges.push_front(NewEdge);
+
+    auto* NewEdge_2 = new Edge<TV,TE>;
+    NewEdge_2->weight=w;
+    //Asignando en la clase Edge los dos vértices pertenecientes
+    NewEdge_2->vertexes[0] = this->vertexes[id2];
+    NewEdge_2->vertexes[1] = this->vertexes[id1];
+
+    this->vertexes[id1]->edges.push_front(NewEdge_1);
+    this->vertexes[id2]->edges.push_front(NewEdge_2);
     //this->num_edge++;
 
     return true;
