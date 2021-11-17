@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <deque>
+#include <unordered_set>
 
 using namespace std;
 
@@ -45,10 +47,11 @@ public:
     virtual TE &operator()(string start, string end)= 0;
     virtual float density() = 0;
     virtual bool isDense(float threshold = 0.5) = 0;
-    //virtual bool isConnected()= 0;
-    //virtual bool isStronglyConnected() throw();
+    virtual bool isConnected()= 0;
+    virtual bool isStronglyConnected()=0;
     virtual bool empty()=0;
     virtual void clear()= 0;
+    virtual vector<Vertex<TV, TE>*> dfs(string id) = 0;
     virtual void displayVertex(string id)= 0;
     virtual bool findById(string id) = 0;
     virtual void display() = 0;
