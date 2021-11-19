@@ -4,9 +4,9 @@
 --------
 
 ## Integrantes
-- 
-- 
-- 
+- Brhandon Gutierrez
+- Isaac Vera
+- Aaron Santamaria
 
 ----
 
