@@ -110,3 +110,6 @@ void dGraphMake(DirectedGraph<string, double> &tempGraph); // Adds the parsed da
 
 
 > **PD:** Puntos extras sobre Evaluación Continua si se implementa una GUI.
+
+
+> **PD1:** Para esta primera entrega hace falta la implementacón de "kruskal", la cual nos comprometemos a hacerlo en un máximo de una semana.
