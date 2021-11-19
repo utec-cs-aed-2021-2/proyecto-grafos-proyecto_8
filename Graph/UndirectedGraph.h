@@ -46,6 +46,16 @@ bool UnDirectedGraph<TV,TE>::insertVertex(string id, TV vertex){
 
     return true;
 }
+template<typename TV, typename TE>
+bool existAtVisited(const deque<Vertex<TV, TE>*> visited, Vertex<TV,TE>* it){
+    for (int i = 0; i < visited.size(); ++i) {
+        if(visited[i]->data == it->data){
+            return true;
+        }
+    }
+    return false;
+}
+
 
 template<typename TV, typename TE>
 bool UnDirectedGraph<TV,TE>::createEdge(string id1, string id2, TE w){
