@@ -36,7 +36,7 @@ struct Vertex {
 
 template<typename TV, typename TE>
 class Graph{
-protected:
+public:
     std::unordered_map<string, Vertex<TV, TE>*>  vertexes;
     int num_vertex = 0;
     int num_edge = 0;
@@ -52,12 +52,14 @@ public:
     virtual bool isStronglyConnected()=0;
     virtual bool empty()=0;
     virtual void clear()= 0;
-    virtual vector<Vertex<TV, TE>*> dfs(string id) = 0;
+    //virtual vector<Vertex<TV, TE>*> dfs(string id) = 0;
     virtual void displayVertex(string id)= 0;
     virtual bool findById(string id) = 0;
     virtual void display() = 0;
     virtual int num_vertexes()=0;
     virtual int num_edges() =0;
 };
+
+
 
 #endif
