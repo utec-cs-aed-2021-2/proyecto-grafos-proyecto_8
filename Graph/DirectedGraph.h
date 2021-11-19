@@ -2,6 +2,8 @@
 #define NONDIRECTEDGRAPH_H
 
 #include "graph.h"
+#include "dfs.h"
+using namespace std;
 
 template<typename TV, typename TE>
 class DirectedGraph : public Graph<TV, TE>{
@@ -14,8 +16,8 @@ public:
     TE &operator()(string start, string end) override;
     float density() override;
     bool isDense(float threshold = 0.5) override;
-    //bool isConnected() override;
-    //bool isStronglyConnected() throw() override;
+    bool isConnected() override;
+    bool isStronglyConnected() throw() override;
     bool empty() override;
     void clear() override;
     void displayVertex(string id) override;
@@ -101,7 +103,7 @@ bool DirectedGraph<TV,TE>::deleteEdge(string id1, string id2){
     if(this->vertexes.find(id1)==this->vertexes.end() || this->vertexes.find(id2)==this->vertexes.end())
         return false;
 
-    for(auto temp_edge: this->vertexes[id1]->edges){
+    for(auto& temp_edge: this->vertexes[id1]->edges){
         //Si la arista existe en direccion id1->id2
         if(temp_edge->vertexes[0]==this->vertexes[id1] && temp_edge->vertexes[1]==this->vertexes[id2]){
             this->vertexes[id1]->edges.remove(temp_edge);
@@ -119,7 +121,7 @@ TE &DirectedGraph<TV,TE>::operator()(string start, string end){
         throw("Uno o dos vértices no existe");
 
     //Validando la conexión en cualquier orden de los vertices
-    for(auto temp_edge: this->vertexes[start]->edges){
+    for(auto& temp_edge: this->vertexes[start]->edges){
         if(temp_edge->vertexes[0]==this->vertexes[start] and temp_edge->vertexes[1]==this->vertexes[end])
             return temp_edge->weight;
     }
@@ -142,15 +144,32 @@ bool DirectedGraph<TV,TE>::isDense(float threshold) {
         return false;
 }
 
-/*
+
 template<typename TV, typename TE>
 bool DirectedGraph<TV,TE>::isConnected(){
-    //IMPLEMENTAR DFS
+    if(empty())
+        throw("Grafo vacío");
+    else{
+        Dfs<TV,TE> dfs(this, this->vertexes.begin()->first);
+        auto vector = dfs.apply();
+        if(this->vertexes.size() == vector.size()){
+            return true;
+        }
+    }
+    return false;
 }
 
 template<typename TV, typename TE>
-bool DirectedGraph<TV,TE>::isStronglyConnected() throw() {}
- */
+bool DirectedGraph<TV,TE>::isStronglyConnected() throw(){
+    for(auto & temp:this->vertexes){
+        Dfs<TV,TE> dfs(this,temp.first);
+        auto vector= dfs.apply();
+        if(vector.size() != this->vertexes.size()){
+            return false;
+        }
+    }
+    return true;
+}
 
 template<typename TV, typename TE>
 bool DirectedGraph<TV,TE>::empty(){
@@ -215,5 +234,4 @@ int DirectedGraph<TV,TE>::num_edges(){
     }
     return this->num_edge;
 }
-
 #endif

@@ -2,6 +2,7 @@
 #define UNDIRECTEDGRAPH_H
 
 #include "graph.h"
+#include "dfs.h"
 #include <string>
 #include <deque>
 #include <unordered_set>
@@ -18,13 +19,12 @@ public:
     float density() override;
     bool isDense(float threshold = 0.5) override;
     bool isConnected() override;
-    bool isStronglyConnected() override;
+    bool isStronglyConnected() throw() override;
     bool empty() override;
     void clear() override;
     void displayVertex(string id) override;
     bool findById(string id) override;
     void display() override;
-    vector<Vertex<TV, TE>*> dfs(string id) override;
     int num_vertexes() override;
     int num_edges() override;
 };
@@ -45,73 +45,6 @@ bool UnDirectedGraph<TV,TE>::insertVertex(string id, TV vertex){
     //this->num_vertex++;
 
     return true;
-}
-
-template<typename TV, typename TE>
-vector<Vertex<TV, TE>*> UnDirectedGraph<TV,TE>::dfs(string id){
-    deque<Vertex<TV, TE>*> ans;
-    deque<Vertex<TV, TE>*> visited;
-    vector<Vertex<TV, TE>*> result;
-
-    auto temp = this->vertexes.at(id);
-    ans.push_back(this->vertexes.at(id));
-    result.push_back(this->vertexes.at(id));
-    while (!ans.empty()){
-        //Obtener los EDGES ordenador menor a mayor
-
-        bool counter = false;
-        int cuentame = 0;
-
-        //Iterar los EDGES ORDENADOR verificando si estan en visitados
-        for (auto it = begin(temp->edges); it != end(temp->edges); it++) {
-            // Acumular resultado
-            for (int i = 0; i < result.size(); ++i) {
-                if(result[i]->data == temp->data){break;}
-                if(i == result.size()-1 and result[i]->data != temp->data){result.push_back(temp);}
-            }
-
-            if(((*it)->vertexes[0]->data == temp->data) ?  existAtVisited(visited, (*it)->vertexes[1]):existAtVisited(visited, (*it)->vertexes[0])){
-                //Si esta en visitados
-                cuentame+=1;
-                if((*it)->vertexes[0]->data == temp->data){
-                    visited.push_back((*it)->vertexes[0]);
-                } else {
-                    visited.push_back((*it)->vertexes[1]);
-                }
-
-            } else{
-                cuentame = 0;
-
-                // Si no esta agregamos y cambiamos el temp
-                if((*it)->vertexes[0]->data == temp->data){
-                    ans.push_back(temp);
-                    visited.push_back(temp);
-                    temp = (*it)->vertexes[1];
-                    break;
-                } else {
-                    if(temp->edges.size() == 1){counter = true;break;}
-                    ans.push_back(temp);
-                    visited.push_back(temp);
-                    temp = (*it)->vertexes[0];
-                    break;
-                }
-            }
-
-        }
-
-        // Si todos estan en visitados eliminamos de ans y cambiamos el temp
-        if(counter or cuentame == temp->edges.size()){
-            ans.pop_front();
-            temp = ans.back();
-            counter = false;
-            cuentame=0;
-        }
-
-
-    }
-
-
-    return result;
 }
 
 template<typename TV, typename TE>
@@ -227,8 +160,9 @@ bool UnDirectedGraph<TV,TE>::isConnected(){
     if(empty())
         throw("Grafo vacío");
     else{
-
-        if(this->vertexes.size() == dfs(this->vertexes.begin()->first).size()){
+        Dfs<TV,TE> dfs(this, this->vertexes.begin()->first);
+        auto vector = dfs.apply();
+        if(this->vertexes.size() == vector.size()){
             return true;
         }
     }
@@ -236,18 +170,8 @@ bool UnDirectedGraph<TV,TE>::isConnected(){
 }
 
 template<typename TV, typename TE>
-bool UnDirectedGraph<TV,TE>::isStronglyConnected(){
-    if(empty())
-        throw("Grafo vacío");
-    else{
-        for(auto & temp:this->vertexes){
-            if(temp.second->edges.size() != this->vertexes.size()-1){
-                return false;
-            }
-        }
-    }
-    return true;
-    
+bool UnDirectedGraph<TV,TE>::isStronglyConnected() throw(){
+    return false;
 }
 
 template<typename TV, typename TE>
