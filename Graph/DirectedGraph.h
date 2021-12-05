@@ -2,7 +2,9 @@
 #define NONDIRECTEDGRAPH_H
 
 #include "graph.h"
-#include "dfs.h"
+#include "Algorithms/dfs.h"
+
+
 using namespace std;
 
 template<typename TV, typename TE>
@@ -25,7 +27,32 @@ public:
     void display() override;
     int num_vertexes() override;
     int num_edges() override;
+    int dijkstra(string from, string to) override;
 };
+
+template<typename TV, typename TE>
+int DirectedGraph<TV,TE>::dijkstra(string from, string to) {
+    if(findById(from) and findById(to)){
+        int cost = 0;int less;
+
+        auto route = this->vertexes.at(from);
+        Vertex<TV,TE>* aux;
+        cout<<route->data<<"-> ";
+
+        while (aux->data != this->vertexes.at(to)->data){
+            less = 999;
+            for(auto x: route->edges){
+                if(cost+x->weight < less){
+                    aux = x->vertexes[1];less = cost + x->weight;
+                }
+            }
+            cout<<aux->data<<"-> ";route = aux;cost = less;
+        }
+        cout<<endl;return cost;
+    } else{
+        throw("No existe el vertice");
+    }
+}
 
 template<typename TV, typename TE>
 bool DirectedGraph<TV,TE>::insertVertex(string id, TV vertex){
