@@ -62,6 +62,9 @@ UndirectedGraph<char, int> result = prim.apply();//return a tree
 AStar<char, int> astar(&graph, "A", "Z", vector<int> heuristics);
 UndirectedGraph<char, int> result = astar.apply();
 
+//Find the minimum path between two nodes.
+template<typename TV, typename TE>
+int UnDirectedGraph<TV,TE>::dijkstra(string from, string to);
 ```
 
 
