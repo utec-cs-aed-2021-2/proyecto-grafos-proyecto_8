@@ -2,12 +2,12 @@
 #define GRAPH_H
 
 #include <iostream>
-#include <list>
-#include <vector>
 #include <string>
-#include <unordered_map>
 #include <deque>
 #include <unordered_set>
+#include <list>
+#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
@@ -20,7 +20,7 @@ struct Vertex;
 template<typename TV, typename TE>
 class Graph;
 
-//////////////////////////////////////////////////////
+
 
 template<typename TV, typename TE>
 struct Edge {
@@ -30,17 +30,17 @@ struct Edge {
 
 template<typename TV, typename TE>
 struct Vertex {
-    TV data;
+    TE data;
     std::list<Edge<TV, TE>*> edges;
 };
 
 template<typename TV, typename TE>
 class Graph{
-public:
-    std::unordered_map<string, Vertex<TV, TE>*>  vertexes;
+protected:
     int num_vertex = 0;
     int num_edge = 0;
 public:
+    std::unordered_map<string, Vertex<TV, TE>*>  vertexes;
     virtual bool insertVertex(string id, TV vertex) = 0;
     virtual bool createEdge(string id1, string id2, TE w) = 0;
     virtual bool deleteVertex(string id) = 0;
@@ -49,7 +49,7 @@ public:
     virtual float density() = 0;
     virtual bool isDense(float threshold = 0.5) = 0;
     virtual bool isConnected()= 0;
-    virtual bool isStronglyConnected()=0;
+    virtual bool isStronglyConnected() =0;
     virtual bool empty()=0;
     virtual void clear()= 0;
     //virtual vector<Vertex<TV, TE>*> dfs(string id) = 0;
@@ -58,6 +58,8 @@ public:
     virtual void display() = 0;
     virtual int num_vertexes()=0;
     virtual int num_edges() =0;
+    virtual int dijkstra(string from, string to) = 0;
+
 };
 
 
