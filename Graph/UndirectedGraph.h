@@ -2,9 +2,10 @@
 #define UNDIRECTEDGRAPH_H
 
 #include "graph.h"
-#include "dfs.h"
+#include "Algorithms/dfs.h"
 #include <string>
 #include <deque>
+#include <unordered_map>
 #include <unordered_set>
 
 template<typename TV, typename TE>
@@ -27,7 +28,34 @@ public:
     void display() override;
     int num_vertexes() override;
     int num_edges() override;
+    int dijkstra(string from, string to) override;
 };
+
+template<typename TV, typename TE>
+int UnDirectedGraph<TV,TE>::dijkstra(string from, string to) {
+    if(findById(from) and findById(to)){
+        unordered_map<Vertex<TV,TE>*,int> visited;
+        int cost = 0;int less;
+
+        auto route = this->vertexes.at(from);
+        visited.insert({route,0});Vertex<TV,TE>* aux;
+        cout<<route->data<<"-> ";
+
+        while (aux->data != this->vertexes.at(to)->data){
+            less = 999;
+            for(auto x: route->edges){
+                if(cost+x->weight < less and visited.find(x->vertexes[1]) == visited.end()){
+                    aux = x->vertexes[1];less = cost + x->weight;
+                }
+            }
+            cout<<aux->data<<"-> ";route = aux;cost = less;
+            visited.insert({route,0});
+        }
+        cout<<endl;return cost;
+    } else{
+        throw("No existe el vertice");
+    }
+}
 
 template<typename TV, typename TE>
 bool UnDirectedGraph<TV,TE>::insertVertex(string id, TV vertex){
@@ -55,7 +83,6 @@ bool existAtVisited(const deque<Vertex<TV, TE>*> visited, Vertex<TV,TE>* it){
     }
     return false;
 }
-
 
 template<typename TV, typename TE>
 bool UnDirectedGraph<TV,TE>::createEdge(string id1, string id2, TE w){
