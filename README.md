@@ -71,14 +71,12 @@ UndirectedGraph<char, int> result = astar.apply();
 
 ### Methods:
 ```cpp
-void clear(); // Clears parser saved atributes
-
-void readJSON(); // Parses JSON file and saves data into class
 // NOTE: each derived class has its own readJSON method
+template <typename TV, typename TE>
+DirectedGraph<TV, TE> openDirectedGraph(string source); // Adds the parsed data into the specified undirected graph
 
-void uGraphMake(UndirectedGraph<string, double> &tempGraph); // Adds the parsed data into the specified undirected graph
-
-void dGraphMake(DirectedGraph<string, double> &tempGraph); // Adds the parsed data into the specified directed graph
+template <typename TV, typename TE>
+UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed data into the specified directed graph
 ```
 
 ## [Git Karma Guidelines](http://karma-runner.github.io/5.2/dev/git-commit-msg.html)
