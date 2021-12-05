@@ -73,11 +73,15 @@ UndirectedGraph<char, int> result = astar.apply();
 ```cpp
 // NOTE: each derived class has its own readJSON method
 template <typename TV, typename TE>
-DirectedGraph<TV, TE> openDirectedGraph(string source); // Adds the parsed data into the specified undirected graph
+DirectedGraph<TV, TE> openDirectedGraph(string source); // Adds the parsed data into the specified directed graph
 
 template <typename TV, typename TE>
-UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed data into the specified directed graph
+UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed data into the specified undirected graph
 ```
+### Additional considerations:
+* This projects needs an additional library, because there's no native support for JSON in C++.
+* This projects uses: https://github.com/open-source-parsers/jsoncpp
+* These additional files: "dist/json/json.h" and "dist/jsoncpp.cpp" are from the library.
 
 ## [Git Karma Guidelines](http://karma-runner.github.io/5.2/dev/git-commit-msg.html)
 
