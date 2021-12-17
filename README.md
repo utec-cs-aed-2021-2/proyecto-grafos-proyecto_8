@@ -50,11 +50,11 @@ void clear(); // Clears the graph
 //Given the graph
 UndirectedGraph<char, int> graph;
 
-//1- Generates a MST graph using the Kruskal approach (only for undirected graphs)
+//1-Kruskal - Generates a MST graph using the Kruskal approach (only for undirected graphs)
 Kruskal<char, int> kruskal(&graph);
 UndirectedGraph<char, int> result = kruskal.apply();//return a tree
 
-//2- Generates a MST graph using the Prim approach (only for undirected graphs)
+//2-Prim Generates a MST graph using the Prim approach (only for undirected graphs)
 Prim<char, int> prim(&graph, "A");
 UndirectedGraph<char, int> result = prim.apply();//return a tree
 
@@ -62,9 +62,27 @@ UndirectedGraph<char, int> result = prim.apply();//return a tree
 AStar<char, int> astar(&graph, "A", "Z", vector<int> heuristics);
 UndirectedGraph<char, int> result = astar.apply();
 
-//Find the minimum path between two nodes.
+//4- Bellman Ford
+Bellman_Ford<char, int> bellman_ford = Bellman_Ford(&graph, "A");
+pair<unordered_map<string, int>, unordered_map<string, string>> result = bellman_ford.apply();
+
+//5- Best BFS
+Best_BFS<char, int> best_bfs = Best_BFS(&graph, "A" , "Z");
+vector<int> result = Best_BFS.apply();
+
+//6- BFS
+BFS<string, int> bfs = BFS(&graph, "A" );
+vector<Vertex <string , int> *> result = BFS.apply();
+
+//7- DFS
+Dfs<string, int> dfs = Dfs(&graph, "A" );
+vector<Vertex <string , int> *> result = Dfs.apply();
+
+//8- Dijkstra - Find the minimum path between two nodes.
 template<typename TV, typename TE>
 int UnDirectedGraph<TV,TE>::dijkstra(string from, string to);
+
+
 ```
 
 
