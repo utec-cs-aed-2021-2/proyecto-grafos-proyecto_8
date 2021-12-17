@@ -108,11 +108,23 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source) {
     return about_;
 }
 
+void loadingFromJsonFile(){
+    openDirectedGraph<char,int>("C:/Users/Administrador/CLionProjects/AED_1/G2D.json");
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G1UD.json");
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G3D.json");
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G4UD.json");
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G5D.json");
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G6D.json");
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G7UD.json");
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G8UD.json");
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G9D.json");
+    
+}
+
 int main() {
+    
 
-
-    auto dg = openDirectedGraph<char,int>("C:/Users/Administrador/CLionProjects/AED_1/example.json");
-    auto udg = openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/example.json");
+    
 
     dg.display();
     cout<<"------"<<endl;
