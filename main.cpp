@@ -124,7 +124,7 @@ void loadingFromJsonFile(){
 int main() {
     
 
-    
+    loadingFromJsonFile();
 
     dg.display();
     cout<<"------"<<endl;
