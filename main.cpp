@@ -1,12 +1,10 @@
 #include <iostream>
-
-#include <iostream>
 #include <unordered_map>
 #include <forward_list>
 #include <vector>
 #include <list>
-#include "Graph/UndirectedGraph.h"
-#include "Graph/DirectedGraph.h"
+#include "UndirectedGraph.h"
+#include "DirectedGraph.h"
 #include <fstream>
 #include <string>
 #include "dist/json/json.h"
@@ -14,12 +12,11 @@
 using namespace std;
 
 
+
 template <typename TV, typename TE>
-DirectedGraph<TV, TE> openDirectedGraph(string source) {
-    string line;
-    string obj;
-    DirectedGraph<TV, TE> about_;
-    ifstream myfile(source, ifstream::in);
+DirectedGraph<TV, TE> openDirectedGraph(string source,bool enableTest = false) {
+    string line;vector<string> nodes_for_tests;string obj;
+    DirectedGraph<TV, TE> about_;ifstream myfile(source, ifstream::in);
     if (myfile.is_open()) {
         while (getline(myfile, line)) { obj += line; }
         myfile.close();
@@ -38,34 +35,37 @@ DirectedGraph<TV, TE> openDirectedGraph(string source) {
         reader.parse(rawJson, root);
     } else {
         Json::CharReaderBuilder builder;
+
         const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
         if (!reader->parse(rawJson.c_str(), rawJson.c_str() + rawJsonLength, &root, &err)) {
-            std::cout << "error" << std::endl;
-            throw("Error al abrir archivo, verifique caracteristicas.");
+            std::cout << "error" << std::endl;throw("Error al abrir archivo, verifique caracteristicas.");
         }
 
         root_1 = root["nodes"];
         for (auto const &id: root_1.getMemberNames()) {
+            nodes_for_tests.push_back(id);
             about_.insertVertex(id, root_1[id].asInt());
         }
 
         root_2 = root["connections"];
         for (auto const &id: root_2.getMemberNames()) {
-            aux = root_2[id];
-            for (auto const &id_: aux.getMemberNames()) {
-                about_.createEdge(id, id_, aux[id_].asInt());
-            }
+            aux = root_2[id];for (auto const &id_: aux.getMemberNames()) {about_.createEdge(id, id_, aux[id_].asInt());}
         }
 
+
+    }
+
+    if(enableTest){
+        cout<<"->"<<source<<endl;
+        cout<<"\t Dijkstra: "<<*nodes_for_tests.begin()<<" to "<<*--nodes_for_tests.end()<<endl;
+        about_.dijkstra(*nodes_for_tests.begin(), *--nodes_for_tests.end());
     }
     return about_;
 }
-
 template <typename TV, typename TE>
-UnDirectedGraph<TV, TE> openUnDirectedGraph(string source) {
-    string line;
-    string obj;
-    UnDirectedGraph<TV, TE> about_;
+UnDirectedGraph<TV, TE> openUnDirectedGraph(string source,bool enableTest = false) {
+    string line;vector<string> nodes_for_tests;
+    string obj;UnDirectedGraph<TV, TE> about_;
     ifstream myfile(source, ifstream::in);
     if (myfile.is_open()) {
         while (getline(myfile, line)) { obj += line; }
@@ -83,8 +83,10 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source) {
     if (shouldUseOldWay) {
         Json::Reader reader;
         reader.parse(rawJson, root);
-    } else {
+    }
+    else {
         Json::CharReaderBuilder builder;
+
         const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
         if (!reader->parse(rawJson.c_str(), rawJson.c_str() + rawJsonLength, &root, &err)) {
             std::cout << "error" << std::endl;
@@ -93,6 +95,7 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source) {
 
         root_1 = root["nodes"];
         for (auto const &id: root_1.getMemberNames()) {
+            nodes_for_tests.push_back(id);
             about_.insertVertex(id, root_1[id].asInt());
         }
 
@@ -103,32 +106,25 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source) {
                 about_.createEdge(id, id_, aux[id_].asInt());
             }
         }
+    }
 
+    if(enableTest){
+        cout<<"->"<<source<<endl;
+        cout<<"\t Dijkstra: "<<*nodes_for_tests.begin()<<" to "<<*--nodes_for_tests.end()<<endl;
+        about_.dijkstra(*nodes_for_tests.begin(), *--nodes_for_tests.end());
     }
     return about_;
 }
-
 void loadingFromJsonFile(){
-    openDirectedGraph<char,int>("C:/Users/Administrador/CLionProjects/AED_1/G2D.json");
-    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G1UD.json");
-    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G3D.json");
-    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G4UD.json");
-    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G5D.json");
-    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G6D.json");
-    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G7UD.json");
-    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G8UD.json");
-    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G9D.json");
-    
+    openDirectedGraph<char,int>("C:/Users/Administrador/CLionProjects/AED_1/G2D.json", true);
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G1UD.json", true);
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G4UD.json", true);
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G6D.json", true);
+    openUnDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G7UD.json", true);
+    openDirectedGraph<char, int>("C:/Users/Administrador/CLionProjects/AED_1/G9D.json", true);
 }
-
 int main() {
-    
-
     loadingFromJsonFile();
-
-    dg.display();
-    cout<<"------"<<endl;
-    udg.display();
 
     return 0;
 }
