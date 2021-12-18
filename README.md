@@ -103,6 +103,11 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed d
 * This projects needs an additional library, because there's no native support for JSON in C++.
 * This projects uses: https://github.com/open-source-parsers/jsoncpp
 * These additional files: "dist/json/json.h" and "dist/jsoncpp.cpp" are from the library.
+* Download the zip library
+* Place on desktop
+* Execute the file amalgamate.py contained in the library with Administrator privileges.
+* The last step will create dist folder in the library. Select and copy in the same folder as main.cpp
+* That's all!
 
 ## [Git Karma Guidelines](http://karma-runner.github.io/5.2/dev/git-commit-msg.html)
 
