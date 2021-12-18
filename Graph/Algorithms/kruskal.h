@@ -68,51 +68,61 @@ public:
 
 };
 
+
 template<typename TV,typename TE>
 class Kruskal{
 public:
     UnDirectedGraph<TV, TE> Graph;
 
-    //Iniciar un Prim ...(1)
     Kruskal(UnDirectedGraph<TV, TE> *grafo){
         this->Graph = *grafo;
     }
 
     UnDirectedGraph<TV, TE> apply() {
         auto result = new UnDirectedGraph<TV,TE>();
-        //1. Ordenar las aristas
-        auto edge_compare = [](Edge<TV, TE>* e1, Edge<TV, TE>* e2) {return e1->weight > e2->weight;};
-        priority_queue<Edge<TV, TE>*, vector<Edge<TV, TE>*>, decltype(edge_compare)> Available_edges(edge_compare);
 
-        unordered_map<Vertex<TV, TE>*, int> ids_int;
-        unordered_map<Vertex<TV, TE>*, string> ids_string;
-        vector<Vertex<TV, TE>*> vecVertex;
+
+        auto edge_compare = [](Edge<TV, TE>* e1, Edge<TV, TE>* e2) {return e1->weight > e2->weight;};//lambda para ordenar las aristas
+        priority_queue<Edge<TV, TE>*, vector<Edge<TV, TE>*>, decltype(edge_compare)> Available_edges(edge_compare);//Ordenamos las aristas del grafo
+
+        unordered_map<Vertex<TV, TE>*, int> ids_int;//Estructura para almacenar id's en tipo int con respecto a su vértice
+        unordered_map<Vertex<TV, TE>*, string> ids_string;//Estructura para almacenar id's en tipo string con respecto a su vértice
+        vector<Vertex<TV, TE>*> vecVertex;//Vector de vértices
 
         //Agregando vertices a vecVertex;
         for(auto& temp: Graph.vertexes) {
             vecVertex.push_back(temp.second);
         }
+
         int k=0;
         //Ordnenando las arista de menor a mayor.
         for(auto& temp_vert: Graph.vertexes){
-            ids_int[temp_vert.second] = k;
-            ids_string[temp_vert.second] = temp_vert.first;
-            for(auto& temp_edge:temp_vert.second->edges){
+            ids_int[temp_vert.second] = k;//llenamos la estructura ids_int
+            ids_string[temp_vert.second] = temp_vert.first;//llenamos la estructura ids_string
+            for(auto& temp_edge:temp_vert.second->edges){//Agregamos las aristas
                 Available_edges.push(temp_edge);
             }
             k++;
         }
 
-        auto *ds = new DisjoinSetTree<Vertex<TV, TE> *>(vecVertex);//Conjunto de vertices con makeset
+        //1. Creamos un DisjoinSetTree en donde se hará MakeSet a todos los vértices
+        auto *ds = new DisjoinSetTree<Vertex<TV, TE> *>(vecVertex);
 
+        //2. Recorremos todos los vértices disponibles
         while(!Available_edges.empty()){
+            //2.1. Escogemos la arista de menor peso
             auto edge_choose = Available_edges.top();
+            //2.2. Lo eliminamos de las aristas disponibles
             Available_edges.pop();
+            //2.3 Verificamos si ambos vértices de la arista son de diferentes conjuntos
             if(ds->Find(ids_int[edge_choose->vertexes[0]]) != ds->Find(ids_int[edge_choose->vertexes[1]])){
+                //2.3.1. Creamos los vértices para el nuevo grafo
                 result->insertVertex(ids_string[edge_choose->vertexes[0]], edge_choose->vertexes[0]->data);
                 result->insertVertex(ids_string[edge_choose->vertexes[1]], edge_choose->vertexes[1]->data);
+                //2.3.2. Insertamos uan arista entre ellos
                 result->createEdge(ids_string[edge_choose->vertexes[0]], ids_string[edge_choose->vertexes[1]],edge_choose->weight);
 
+                //2.3.3 Unimos en un solo conjunto a los dos vértices.
                 ds->Union(ds->Find(ids_int[edge_choose->vertexes[0]]), ds->Find(ids_int[edge_choose->vertexes[1]]));
             }
         }
