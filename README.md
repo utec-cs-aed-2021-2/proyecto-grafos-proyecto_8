@@ -106,7 +106,7 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed d
 * Download the zip library
 * Place on desktop
 * Execute the file amalgamate.py contained in the library with Administrator privileges.
-* The last step will create dist folder in the library. Select and copy in the same folder as main.cpp
+* The last step will create a folder named dist in the library. Select and copy in the same folder as main.cpp
 * That's all!
 
 ## [Git Karma Guidelines](http://karma-runner.github.io/5.2/dev/git-commit-msg.html)
