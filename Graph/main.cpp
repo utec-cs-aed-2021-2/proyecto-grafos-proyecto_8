@@ -89,7 +89,8 @@ DirectedGraph<TV, TE>* openDirectedGraph(string source,bool enableTest = false) 
 
         cout<<"\t:___FLOYD WARSHALL___:"<<endl;
         Floyd_Warshall<char, int> floydWarshall(about_, *nodes_for_tests.begin(), *--nodes_for_tests.end());
-        //floydWarshall.apply();
+        vector<Vertex<char, int>*> result_5 = floydWarshall.apply();
+        cout<<"\t\t";for(auto x:result_5){cout<<x->data<<"->";}cout<<endl;
 
 
     }
