@@ -5,12 +5,17 @@
 #include <queue>
 #include <unordered_set>
 
+//Prim<char, int> prim(&graph, "A");....(1)
+//UndirectedGraph<char, int> result = prim.apply();....(2)
+
 template<typename TV,typename TE>
 class Prim{
 public:
     UnDirectedGraph<TV,TE> Graph;
-    string id_start;
-    Prim(UnDirectedGraph<TV,TE> *grafo, string id_){
+    TV id_start;
+
+    //Iniciar un Prim ...(1)
+    Prim(UnDirectedGraph<TV,TE> *grafo, TV id_){
         this->Graph = *grafo;
         id_start= id_;
     }
@@ -21,6 +26,11 @@ public:
         priority_queue<Edge<TV, TE>*, vector<Edge<TV, TE>*>, decltype(edge_compare)> Available_edges(edge_compare);
         unordered_map<Vertex<TV, TE>*, string> ids;
         unordered_set<Vertex<TV, TE>*> visited;
+        unordered_map<TV,string> value_ids; //Para entrada con valor del nodo
+
+        for(auto& temp: Graph.vertexes)//Para entrada con valor del nodo
+            value_ids[temp.second->data] = temp.first;
+
         //lambda
         auto is_visited = [&visited](Vertex<TV, TE>* vx) { return visited.find(vx) != end(visited); };
 
@@ -28,7 +38,7 @@ public:
             ids[temp_vert.second] = temp_vert.first;
 
         //1. Elegimos el vertice
-        auto vx = Graph.vertexes[id_start];
+        auto vx = Graph.vertexes[value_ids[id_start]];
 
         //2. Agregamos el vértice en visitados y agregamos los aristas
         visited.insert(vx);
@@ -36,6 +46,12 @@ public:
         for(auto &temp_edge: vx->edges){
             Available_edges.push(temp_edge);
         }
+        /*
+        while(!Available_edges.empty()){
+            cout<<Available_edges.top()->weight<<"-"<<Available_edges.top()->vertexes[0]->data<<endl;
+            Available_edges.pop();
+        }*/
+        //result->insertVertex()
 
         //3. Recorrer las "aristas disponibles" mientras no esté vacío
         while(!Available_edges.empty()){
@@ -61,6 +77,7 @@ public:
         }
         return *result;
     }
+
 };
 
 #endif //AED_1_PRIM_H
