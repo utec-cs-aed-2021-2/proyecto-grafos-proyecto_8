@@ -143,4 +143,4 @@ UnDirectedGraph<TV, TE> openUnDirectedGraph(string source); // Adds the parsed d
 > **PD1:** Para esta primera entrega hace falta la implementacón de "kruskal", la cual nos comprometemos a hacerlo en un máximo de una semana.
 
 ## Last suggestions
-* We suggest to disable antivirus.
+* We recomend to disable antivirus.
