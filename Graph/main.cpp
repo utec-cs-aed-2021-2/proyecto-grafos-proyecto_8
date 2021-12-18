@@ -61,7 +61,7 @@ DirectedGraph<TV, TE>* openDirectedGraph(string source,bool enableTest = false) 
         cout<<"\t\t";about_->dijkstra(*nodes_for_tests.begin(), *--nodes_for_tests.end());
 
         cout<<"\t:___BELLMAN FORD___:"<<endl;
-        Bellman_Ford<char,int> bellmanFord = Bellman_Ford(about_, *nodes_for_tests.begin());
+        Bellman_Ford<char,int> bellmanFord = Bellman_Ford<char,int>(about_, *nodes_for_tests.begin());
         pair<unordered_map<string,int>,unordered_map<string, string>> result = bellmanFord.apply();
         cout<<"\t\t";cout << "Distances: \n";
         for (auto& key: result.first) {
@@ -73,12 +73,12 @@ DirectedGraph<TV, TE>* openDirectedGraph(string source,bool enableTest = false) 
         }
 
         cout<<"\t___BEST BFS___: "<<endl;
-        Best_BFS<char,int> bestBfs = Best_BFS(about_,*nodes_for_tests.begin(), *--nodes_for_tests.end());
+        Best_BFS<char,int> bestBfs = Best_BFS<char,int>(about_,*nodes_for_tests.begin(), *--nodes_for_tests.end());
         vector<int> result_2 = bestBfs.apply();
         cout<<"\t\t";for(auto x:result_2){cout<<x<<"->";}cout<<endl;
 
         cout<<"\t:___DFS___:"<<endl;
-        Dfs<char,int> dfs = Dfs(about_, *--nodes_for_tests.end());
+        Dfs<char,int> dfs = Dfs<char,int>(about_, *--nodes_for_tests.end());
         vector<Vertex<char, int>*> result_3 = dfs.apply();
         cout<<"\t\t";for(auto x:result_3){cout<<x->data<<" -> ";}cout<<endl;
 
@@ -147,17 +147,17 @@ UnDirectedGraph<TV, TE>* openUnDirectedGraph(string source,bool enableTest = fal
         result_1.display();
 
         cout<<"\t___BEST BFS___: "<<endl;
-        Best_BFS<char,int> bestBfs = Best_BFS(about_,*nodes_for_tests.begin(), *--nodes_for_tests.end());
+        Best_BFS<char,int> bestBfs = Best_BFS<char,int>(about_,*nodes_for_tests.begin(), *--nodes_for_tests.end());
         vector<int> result_2 = bestBfs.apply();
         cout<<"\t\t";for(auto x:result_2){cout<<x<<"->";}cout<<endl;
 
         cout<<"\t:___DFS___:"<<endl;
-        Dfs<TV,TE> dfs = Dfs(about_, *nodes_for_tests.begin());
+        Dfs<char,int> dfs = Dfs<char,int>(about_, *nodes_for_tests.begin());
         vector<Vertex<char, int>*> result_3 = dfs.apply();
         cout<<"\t\t";for(auto x:result_3){cout<<x->data<<"->";}cout<<endl;
 
         cout<<"\t:___BFS___:"<<endl;
-        BFS<TV,TE> bfs = BFS<TV,TE>(about_, *--nodes_for_tests.end());
+        BFS<char,int> bfs = BFS<TV,TE>(about_, *--nodes_for_tests.end());
         vector<Vertex<char, int>*> result_4 = dfs.apply();
         cout<<"\t\t";for(auto x:result_4){cout<<x->data<<"->";}cout<<endl;
     }
